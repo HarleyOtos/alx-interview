@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 def canUnlockAll(boxes):
     n = len(boxes)
     unlocked = [False] * n
@@ -14,7 +15,6 @@ def canUnlockAll(boxes):
                 keys.append(key)
 
     return all(unlocked)
-
 
 if __name__ == "__main__":
     # Example usage
