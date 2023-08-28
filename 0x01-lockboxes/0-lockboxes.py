@@ -15,6 +15,7 @@ def canUnlockAll(boxes):
 
     return all(unlocked)
 
+
 if __name__ == "__main__":
     # Example usage
     boxes1 = [[1], [2], [3], [4], []]
