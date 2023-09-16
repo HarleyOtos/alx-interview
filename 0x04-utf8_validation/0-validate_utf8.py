@@ -26,7 +26,7 @@ def validUTF8(data):
     # Iterate through each integer in the data list
     for num in data:
         # Convert the integer to its binary representation with 8 least significant bits
-        binary_repr = bin(num)[-8:].zfill(8)
+        binary_repr = format(num, '08b')
 
         # If we're not expecting any continuation bytes, this should start with '0'
         if num_continuation_bytes == 0:
