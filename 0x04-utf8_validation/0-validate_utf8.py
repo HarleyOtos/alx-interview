@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Data set represents a valid UTF-8 encoding.
-"""
+""" Data set represents a valid UTF-8 encoding. """
 
 
 def validUTF8(data):
@@ -18,8 +16,8 @@ def validUTF8(data):
 
     Each integer represents 1 byte of data, therefore you only
     need to handle the 8 least significant bits of each integer.
+    
     """
-
     # Initialize a variable to keep track of the number of 
     # expected continuation bytes
     num_continuation_bytes = 0
