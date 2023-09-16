@@ -10,25 +10,20 @@ def canUnlockAll(boxes):
     The first box boxes[0] is unlocked
     Return True if all boxes can be opened, else return False
     """
-    # Initialize a list to keep track of visited boxes
-    visited = [False] * len(boxes)
-    
-    # Start with the first box (box 0) which is already unlocked
-    visited[0] = True
-    
-    # Create a queue to perform BFS
-    queue = [0]
-    
-    # Perform BFS
-    while queue:
-        current_box = queue.pop(0)
-        
-        # Check the keys in the current box
-        for key in boxes[current_box]:
-            # If the key corresponds to an unvisited box, mark it as visited
-            if not visited[key]:
-                visited[key] = True
-                queue.append(key)
-    
-    # If all boxes have been visited, return True
-    return all(visited)
+    keys = {0: True}
+    n_boxes = len(boxes)
+
+    while True:
+        n_keys = len(keys)
+
+        for i in range(len(boxes)):
+            if boxes[i] and keys.get(i, False):
+                for j in boxes[i]:
+                    if j < n_boxes:
+                        keys[j] = True
+                boxes[i] = None
+
+        if len(keys) <= n_keys:
+            break
+
+    return len(keys) == n_boxes
