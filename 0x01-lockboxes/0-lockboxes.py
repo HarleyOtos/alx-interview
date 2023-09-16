@@ -1,7 +1,15 @@
 #!/usr/bin/python3
+""" Lockboxes task """
 
 
 def canUnlockAll(boxes):
+    """
+    boxes is a list of lists
+    A key with the same number as a box opens that box
+    You can assume all keys will be positive integers
+    The first box boxes[0] is unlocked
+    Return True if all boxes can be opened, else return False
+    """
     n = len(boxes)
     unlocked = [False] * n
     unlocked[0] = True
@@ -15,14 +23,3 @@ def canUnlockAll(boxes):
                 keys.append(key)
 
     return all(unlocked)
-
-if __name__ == "__main__":
-    # Example usage
-    boxes1 = [[1], [2], [3], [4], []]
-    print(canUnlockAll(boxes1))  # Output: True
-
-    boxes2 = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
-    print(canUnlockAll(boxes2))  # Output: True
-
-    boxes3 = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
-    print(canUnlockAll(boxes3))  # Output: False
