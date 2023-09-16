@@ -8,7 +8,7 @@ def validUTF8(data):
     """
     Check data set represents a valid UTF-8 encoding.
 
-    Return: `True` if data is a valid UTF-8 encoding, else return `False`.
+    Return: `True` if data is a valid UTF-8 encoding, else return `False`
 
     A character in UTF-8 can be 1 to 4 bytes long.
 
@@ -20,12 +20,14 @@ def validUTF8(data):
     need to handle the 8 least significant bits of each integer.
     """
 
-    # Initialize a variable to keep track of the number of expected continuation bytes
+    # Initialize a variable to keep track of the number of 
+    # expected continuation bytes
     num_continuation_bytes = 0
 
     # Iterate through each integer in the data list
     for num in data:
-        # Convert the integer to its binary representation with 8 least significant bits
+        # Convert the integer to its binary representation with 
+        # 8 least significant bits
         binary_repr = format(num, '08b')
 
         # If we're not expecting any continuation bytes, this should start with '0'
