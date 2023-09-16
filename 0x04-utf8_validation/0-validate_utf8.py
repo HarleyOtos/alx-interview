@@ -1,51 +1,64 @@
 #!/usr/bin/python3
 """ Data set represents a valid UTF-8 encoding. """
 
-
 def validUTF8(data):
     """
-    Check data set represents a valid UTF-8 encoding.
+    Method that determines if a given data set represents a valid
+    UTF-8 encoding.
 
-    Return: `True` if data is a valid UTF-8 encoding, else return `False`
+    Return: True if data is a valid UTF-8 encoding, else return False
 
-    A character in UTF-8 can be 1 to 4 bytes long.
+    A character in UTF-8 can be 1 to 4 bytes long
 
-    The data set can contain multiple characters.
+    The data set can contain multiple characters
 
-    The data will be represented by a list of integers.
+    The data will be represented by a list of integers
 
     Each integer represents 1 byte of data, therefore you only
-    need to handle the 8 least significant bits of each integer.
-    
+    need to handle the 8 least significant bits of each integer
+
     """
-    # Initialize a variable to keep track of the number of 
-    # expected continuation bytes
-    num_continuation_bytes = 0
+    # Variable for counting number of bytes in UTF-8 Character
+    num_bytes = 0
 
-    # Iterate through each integer in the data list
-    for num in data:
-        # Convert the integer to its binary representation with 
-        # 8 least significant bits
-        binary_repr = format(num, '08b')
+    # Masks for checking if byte is valid (Starts with 10)
+    mask1 = 1 << 7
+    mask2 = 1 << 6
 
-        # If we're not expecting any continuation bytes, this should start with '0'
-        if num_continuation_bytes == 0:
-            if binary_repr[0] == '0':
-                continue  # Single-byte character, move to the next integer
-            elif binary_repr.startswith('110'):
-                num_continuation_bytes = 1  # Expecting 1 continuation byte
-            elif binary_repr.startswith('1110'):
-                num_continuation_bytes = 2  # Expecting 2 continuation bytes
-            elif binary_repr.startswith('11110'):
-                num_continuation_bytes = 3  # Expecting 3 continuation bytes
-            else:
-                return False  # Invalid leading bits
+    for i in data:
 
-        # If we're expecting continuation bytes, the integer should start with '10'
+        mask_n_byte = 1 << 7
+
+        if num_bytes == 0:
+            # Count number of bytes the UTF-8 Character will have
+            while mask_n_byte & i:
+                num_bytes += 1
+                mask_n_byte = mask_n_byte >> 1
+
+            # If number of bytes did not increase then it has 1 byte
+            # which is the same we are counting so no need to check next bytes
+            # for current character
+            if num_bytes == 0:
+                continue
+
+            # A character in UTF-8 can be 1 to 4 bytes long
+            # But 1 byte characters start in 0 so num_bytes should never
+            # be 1
+            if num_bytes == 1 or num_bytes > 4:
+                return False
+
         else:
-            if not binary_repr.startswith('10'):
-                return False  # Invalid continuation byte
-            num_continuation_bytes -= 1
+            # Every byte that is not the first byte of a character should start
+            # with 10, otherwise is not valid
+            if not (i & mask1 and not (i & mask2)):
+                    return False
 
-    # After processing all integers, num_continuation_bytes should be 0
-    return num_continuation_bytes == 0
+        # If bytes of character are valid, then the count will decrease with
+        # each byte until a new character starts
+        num_bytes -= 1
+
+    # All characters were verified correctly with their proper byte count
+    if num_bytes == 0:
+        return True
+
+    return False
